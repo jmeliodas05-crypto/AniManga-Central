@@ -1,0 +1,2602 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b091a">
+
+    <meta name="description" content="AniManga Central: explore animes, mangás, notícias e sua comunidade favorita.">
+
+    <title>AniManga Central | Seu universo otaku</title>
+
+    <!-- FONTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+    /* =========================================
+       01. DESIGN SYSTEM
+    ========================================= */
+
+    :root {
+        --bg: #0b091a;
+        --surface: #13102b;
+        --surface-2: #1e1b4b;
+        --surface-3: #29245e;
+
+        --primary: #ff4655;
+        --primary-hover: #ff6571;
+
+        --purple: #8b78ff;
+        --purple-light: #b8aaff;
+
+        --text: #f5f3ff;
+        --muted: #aaa6c5;
+
+        --border: rgba(190,180,255,.13);
+
+        --font-body: "DM Sans", sans-serif;
+        --font-title: "Outfit", sans-serif;
+
+        --radius-sm: 9px;
+        --radius-md: 16px;
+        --radius-lg: 24px;
+
+        --shadow: 0 18px 50px rgba(0,0,0,.3);
+
+        --transition: .3s cubic-bezier(.2,.8,.2,1);
+    }
+
+    /* =========================================
+       02. RESET
+    ========================================= */
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 130px;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    button, input {
+        font: inherit;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    .container {
+        width: min(1500px, calc(100% - 40px));
+        margin: auto;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    /* =========================================
+       03. BUTTONS
+    ========================================= */
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 12px 22px;
+        border-radius: 50px;
+        border: none;
+        font-weight: 700;
+        font-size: 14px;
+        transition: var(--transition);
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+    }
+
+    .btn-primary {
+        color: white;
+        background: var(--primary);
+        box-shadow: 0 8px 25px rgba(255,70,85,.2);
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-hover);
+    }
+
+    .btn-outline {
+        color: white;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,.3);
+    }
+
+    .btn-outline:hover {
+        background: rgba(255,255,255,.1);
+    }
+
+    /* =========================================
+       04. HEADER
+    ========================================= */
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(11,9,26,.94);
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font: 800 20px var(--font-title);
+        white-space: nowrap;
+    }
+
+    .logo-icon {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: linear-gradient(145deg,#ff6874,#c52c67,#7154d9);
+        font-size: 24px;
+        color: white;
+    }
+
+    .logo-name span {
+        color: var(--primary);
+    }
+
+    /* =========================================
+       05. SEARCH BAR
+    ========================================= */
+
+    .search {
+        flex: 1;
+        max-width: 530px;
+        position: relative;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 17px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        display: flex;
+        pointer-events: none;
+    }
+
+    .search input {
+        width: 100%;
+        height: 46px;
+        padding: 0 20px 0 48px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        color: white;
+        outline: none;
+        transition: var(--transition);
+    }
+
+    .search input::placeholder {
+        color: #77718f;
+    }
+
+    .search input:focus {
+        border-color: var(--purple);
+        box-shadow: 0 0 0 4px rgba(139,120,255,.13);
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .icon-btn {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        font-size: 21px;
+        transition: var(--transition);
+    }
+
+    .icon-btn:hover,
+    .icon-btn[aria-pressed="true"] {
+        color: var(--primary);
+        background: var(--surface-2);
+    }
+
+    /* =========================================
+       06. NAVIGATION
+    ========================================= */
+
+    .main-nav {
+        border-top: 1px solid rgba(255,255,255,.04);
+    }
+
+    .nav-list {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        min-height: 48px;
+        overflow-x: auto;
+    }
+
+    .nav-list a {
+        position: relative;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: .3s;
+    }
+
+    .nav-list a:hover,
+    .nav-list a.active {
+        color: white;
+    }
+
+    .nav-list a.active::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--primary);
+    }
+
+    /* =========================================
+       07. HERO SECTION
+    ========================================= */
+
+    .hero {
+        position: relative;
+        min-height: 530px;
+        margin: 30px auto 45px;
+        display: flex;
+        align-items: flex-end;
+        overflow: hidden;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+
+        background:
+            linear-gradient(90deg,
+                rgba(11,9,26,.98) 0%,
+                rgba(11,9,26,.76) 48%,
+                rgba(11,9,26,.12) 100%
+            ),
+            linear-gradient(0deg,
+                rgba(11,9,26,.8),
+                transparent 60%
+            ),
+            url("https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=2000&q=90")
+            center/cover;
+
+        box-shadow: var(--shadow);
+    }
+
+    .hero-content {
+        max-width: 680px;
+        padding: 55px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-tag {
+        display: inline-block;
+        padding: 7px 14px;
+        margin-bottom: 18px;
+        border-radius: 50px;
+        background: rgba(255,70,85,.17);
+        color: #ff9ba3;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-bottom: 15px;
+        color: #d8d3e8;
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        font: 800 clamp(55px,7vw,95px)/.95 var(--font-title);
+        letter-spacing: -4px;
+        margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+        color: var(--primary);
+    }
+
+    .hero-description {
+        max-width: 490px;
+        color: #d0cce0;
+        margin-bottom: 25px;
+        font-size: 14px;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    /* =========================================
+       08. SECTION HEADINGS
+    ========================================= */
+
+    .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 23px;
+    }
+
+    .section-heading h2 {
+        font: 700 25px var(--font-title);
+    }
+
+    .section-heading > a {
+        color: var(--purple-light);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .eyebrow {
+        color: #ff929b;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    /* =========================================
+       09. ANIME CATALOG
+    ========================================= */
+
+    .anime-catalog {
+        margin-bottom: 48px;
+    }
+
+    .catalog-counter {
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .anime-grid {
+        display: grid;
+        grid-template-columns: repeat(4,minmax(0,1fr));
+        gap: 20px;
+    }
+
+    .anime-card {
+        min-width: 0;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        transition: var(--transition);
+    }
+
+    .anime-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(255,70,85,.5);
+        box-shadow: 0 20px 45px rgba(0,0,0,.35);
+    }
+
+    .anime-image {
+        height: 245px;
+        position: relative;
+        overflow: hidden;
+        background: var(--surface-2);
+    }
+
+    .anime-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: .5s;
+    }
+
+    .anime-card:hover .anime-image img {
+        transform: scale(1.08);
+    }
+
+    .anime-rating {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: rgba(11,9,26,.9);
+        color: #ffd36a;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .anime-info {
+        padding: 17px;
+    }
+
+    .anime-type {
+        color: var(--primary);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .anime-info h3 {
+        margin: 5px 0;
+        font: 700 20px var(--font-title);
+    }
+
+    .anime-info p {
+        min-height: 38px;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 13px;
+    }
+
+    .details-button {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    /* =========================================
+       10. MODAL ANIME DETAILS
+    ========================================= */
+
+    .anime-modal {
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        padding: 0;
+        width: min(680px,calc(100% - 30px));
+        max-height: 90vh;
+        overflow-y: auto;
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 25px 100px rgba(0,0,0,.7);
+    }
+
+    .anime-modal[open] {
+        animation: modalOpen .25s ease;
+    }
+
+    .anime-modal::backdrop {
+        background: rgba(0,0,0,.83);
+        backdrop-filter: blur(7px);
+    }
+
+    @keyframes modalOpen {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(.97);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 5;
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 50%;
+        color: white;
+        background: rgba(11,9,26,.85);
+        font-size: 18px;
+    }
+
+    .modal-close:hover {
+        background: var(--primary);
+    }
+
+    .modal-banner {
+        position: relative;
+        height: 240px;
+        background-color: var(--surface-2);
+        background-size: cover;
+        background-position: center;
+    }
+
+    .modal-banner::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(0deg,var(--surface),transparent);
+    }
+
+    .modal-rating {
+        position: absolute;
+        z-index: 2;
+        bottom: 20px;
+        right: 20px;
+        color: #ffd36a;
+        font-weight: 800;
+    }
+
+    .modal-content {
+        padding: 25px;
+    }
+
+    .modal-content h2 {
+        margin: 5px 0 12px;
+        font: 800 36px var(--font-title);
+    }
+
+    .modal-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin: 12px 0;
+    }
+
+    .modal-meta span {
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: var(--surface-2);
+        color: #c9c0ff;
+        font-size: 11px;
+    }
+
+    .modal-synopsis {
+        margin: 16px 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .modal-content h3 {
+        margin: 22px 0 13px;
+        font: 700 19px var(--font-title);
+    }
+
+    .specifications {
+        display: grid;
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .spec-item {
+        padding: 13px;
+        background: #0e0c22;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow-wrap: anywhere;
+    }
+
+    .spec-item small {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+
+    .spec-item strong {
+        font-size: 13px;
+    }
+
+    .modal-watch {
+        width: 100%;
+    }
+
+    /* =========================================
+       11. THREE COLUMN DASHBOARD
+    ========================================= */
+
+    .dashboard {
+        display: grid;
+        grid-template-columns:
+            minmax(220px,.88fr)
+            minmax(0,1.65fr)
+            minmax(260px,.95fr);
+        gap: 22px;
+        align-items: start;
+        padding-bottom: 70px;
+    }
+
+    .panel {
+        min-width: 0;
+        padding: 22px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+    }
+
+    /* =========================================
+       12. TRENDING
+    ========================================= */
+
+    .trending-list {
+        display: grid;
+        gap: 15px;
+    }
+
+    .trend-item {
+        display: grid;
+        grid-template-columns: 62px 1fr auto;
+        align-items: center;
+        gap: 12px;
+        padding: 6px;
+        border-radius: 12px;
+        transition: var(--transition);
+    }
+
+    .trend-item:hover {
+        background: rgba(255,255,255,.05);
+        transform: translateX(4px);
+    }
+
+    .trend-item img {
+        width: 62px;
+        height: 76px;
+        object-fit: cover;
+        border-radius: 9px;
+    }
+
+    .trend-info h3 {
+        font: 700 14px var(--font-title);
+    }
+
+    .trend-info p {
+        color: var(--muted);
+        font-size: 11px;
+    }
+
+    .genre {
+        display: inline-block;
+        margin-top: 5px;
+        padding: 2px 8px;
+        border-radius: 5px;
+        background: rgba(139,120,255,.13);
+        color: #c9c0ff;
+        font-size: 10px;
+    }
+
+    .rank {
+        color: #77718f;
+        font-weight: 700;
+    }
+
+    /* =========================================
+       13. NEWS
+    ========================================= */
+
+    .news-list {
+        display: grid;
+        gap: 20px;
+    }
+
+    .news-card {
+        display: grid;
+        grid-template-columns: 38% 1fr;
+        gap: 16px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .news-card:last-child {
+        padding-bottom: 0;
+        border: none;
+    }
+
+    .news-image {
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .news-card img {
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
+        transition: .4s;
+    }
+
+    .news-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .news-date {
+        color: #ff929b;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .news-copy h3 {
+        margin: 5px 0;
+        font: 700 17px/1.3 var(--font-title);
+    }
+
+    .news-copy p {
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    /* =========================================
+       14. SIGNUP FORM
+    ========================================= */
+
+    .signup-panel {
+        position: sticky;
+        top: 145px;
+    }
+
+    .signup-panel h2 {
+        margin: 5px 0;
+        font: 700 25px var(--font-title);
+    }
+
+    .signup-intro {
+        margin-bottom: 22px;
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .form-field {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 15px;
+    }
+
+    .form-field label {
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .form-field input {
+        width: 100%;
+        min-height: 46px;
+        padding: 10px 13px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        background: #0e0c22;
+        color: white;
+        outline: none;
+        transition: var(--transition);
+    }
+
+    .form-field input:focus {
+        border-color: var(--purple);
+        box-shadow: 0 0 0 3px rgba(139,120,255,.14);
+    }
+
+    .form-field input[aria-invalid="true"] {
+        border-color: var(--primary);
+    }
+
+    .form-field input::placeholder {
+        color: #77718f;
+    }
+
+    .error {
+        color: #ff929b;
+        font-size: 11px;
+    }
+
+    .signup-submit {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .form-status {
+        color: #61d6a5;
+        font-size: 12px;
+        text-align: center;
+        margin-top: 12px;
+    }
+
+    .form-note {
+        margin-top: 15px;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .form-note a {
+        color: #c4baff;
+        font-weight: 700;
+    }
+
+    /* =========================================
+       15. EMPTY SEARCH
+    ========================================= */
+
+    .empty-state {
+        display: none;
+        padding: 20px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .empty-state.show {
+        display: block;
+    }
+
+    [hidden] {
+        display: none !important;
+    }
+
+    /* =========================================
+       16. FOOTER
+    ========================================= */
+
+    footer {
+        background: #080713;
+        border-top: 1px solid var(--border);
+    }
+
+    .footer-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        padding: 42px 0;
+    }
+
+    .footer-description {
+        max-width: 270px;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 22px;
+        color: #c3bed7;
+        font-size: 13px;
+    }
+
+    .footer-links a:hover {
+        color: white;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 10px;
+    }
+
+    .social-links a {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        background: var(--surface);
+        transition: var(--transition);
+    }
+
+    .social-links a:hover {
+        background: var(--primary);
+        transform: translateY(-4px);
+    }
+
+    .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 18px 0;
+        border-top: 1px solid var(--border);
+        color: #77718f;
+        font-size: 11px;
+    }
+
+    /* =========================================
+       17. RESPONSIVIDADE
+    ========================================= */
+
+    @media(min-width:1800px) {
+        .container {
+            width: min(1680px,calc(100% - 80px));
+        }
+    }
+
+    @media(max-width:1100px) {
+        .dashboard {
+            grid-template-columns: minmax(220px,.8fr) minmax(0,1.4fr);
+        }
+
+        .signup-panel {
+            position: static;
+            grid-column: 1 / -1;
+        }
+
+        .anime-grid {
+            grid-template-columns: repeat(2,minmax(0,1fr));
+        }
+    }
+
+    @media(max-width:720px) {
+        .header-content {
+            flex-wrap: wrap;
+            padding: 12px 0;
+        }
+
+        .search {
+            order: 3;
+            flex-basis: 100%;
+            max-width: none;
+        }
+
+        .header-actions .icon-btn {
+            display: none;
+        }
+
+        .nav-list {
+            gap: 25px;
+        }
+
+        .hero {
+            min-height: 470px;
+            background-position: 58% center;
+        }
+
+        .hero-content {
+            padding: 25px;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px,13vw,75px);
+        }
+
+        .dashboard {
+            grid-template-columns: 1fr;
+        }
+
+        .signup-panel {
+            grid-column: auto;
+        }
+
+        .footer-main {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+
+    @media(max-width:480px) {
+        .container {
+            width: calc(100% - 24px);
+        }
+
+        .panel {
+            padding: 16px;
+        }
+
+        .anime-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .anime-image {
+            height: 260px;
+        }
+
+        .news-card {
+            grid-template-columns: 105px 1fr;
+            gap: 12px;
+        }
+
+        .news-card img {
+            height: 115px;
+        }
+
+        .news-copy h3 {
+            font-size: 14px;
+        }
+
+        .news-copy p {
+            font-size: 11px;
+        }
+
+        .specifications {
+            grid-template-columns: 1fr;
+        }
+
+        .modal-content {
+            padding: 18px;
+        }
+
+        .modal-content h2 {
+            font-size: 28px;
+        }
+
+        .footer-bottom {
+            flex-direction: column;
+        }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+        *,
+        *::before,
+        *::after {
+            scroll-behavior: auto !important;
+            animation-duration: .01ms !important;
+            transition-duration: .01ms !important;
+        }
+    }
+
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header>
+
+    <div class="container header-content">
+
+        <a href="#home" class="logo"
+           aria-label="AniManga Central - início">
+
+            <span class="logo-icon">A</span>
+
+            <span class="logo-name">
+                AniManga <span>Central</span>
+            </span>
+
+        </a>
+
+        <!-- BARRA DE PESQUISA COM LUPA -->
+
+        <form class="search" id="searchForm" role="search">
+
+            <label for="searchInput" class="sr-only">
+                Buscar animes, mangás e notícias
+            </label>
+
+            <span class="search-icon" aria-hidden="true">
+
+                <svg width="21" height="21"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round">
+
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+
+                </svg>
+
+            </span>
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Buscar animes, mangás e notícias..."
+                autocomplete="off"
+            >
+
+        </form>
+
+        <div class="header-actions">
+
+            <button class="icon-btn"
+                    id="favoritesButton"
+                    type="button"
+                    aria-label="Selecionar favoritos"
+                    aria-pressed="false">
+
+                ♡
+
+            </button>
+
+            <button class="icon-btn"
+                    id="accountButton"
+                    type="button"
+                    aria-label="Minha conta">
+
+                ♙
+
+            </button>
+
+            <a href="#signup" class="btn btn-primary">
+                Login ↗
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- NAVEGAÇÃO -->
+
+    <nav class="main-nav" aria-label="Navegação principal">
+
+        <div class="container">
+
+            <ul class="nav-list">
+
+                <li>
+                    <a href="#home" class="active" aria-current="page">
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#animeCatalog">
+                        Anime
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#news">
+                        Manga
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#news">
+                        News
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#community">
+                        Community
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main class="container" id="home">
+
+    <!-- HERO -->
+
+    <section class="hero" aria-labelledby="heroTitle">
+
+        <div class="hero-content">
+
+            <span class="hero-tag">
+                ✦ ANIME OF THE MONTH
+            </span>
+
+            <div class="hero-meta">
+
+                <span>2019 • Action / Fantasy</span>
+                <span>★ Destaque</span>
+                <span>TV Series</span>
+
+            </div>
+
+            <h1 id="heroTitle">
+                Demon <span>Slayer</span>
+            </h1>
+
+            <p class="hero-description">
+                Em um mundo ameaçado por demônios, Tanjiro Kamado
+                inicia uma jornada perigosa para salvar sua irmã
+                e encontrar uma cura. Uma história de coragem,
+                família e determinação.
+            </p>
+
+            <div class="hero-actions">
+
+                <button class="btn btn-primary"
+                        type="button"
+                        data-open-anime="demon">
+
+                    ▶ Ver detalhes
+
+                </button>
+
+                <a href="#animeCatalog" class="btn btn-outline">
+                    Explorar catálogo ↗
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         CATÁLOGO DE ANIMES
+    ====================================== -->
+
+    <section class="anime-catalog" id="animeCatalog">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    EXPLORE YOUR UNIVERSE
+                </span>
+
+                <h2>Explore Animes</h2>
+
+            </div>
+
+            <span class="catalog-counter" id="animeCounter">
+                4 animes
+            </span>
+
+        </div>
+
+        <div class="anime-grid" id="animeGrid">
+
+            <!-- DEMON SLAYER -->
+
+            <article class="anime-card"
+                     data-search="demon slayer kimetsu action fantasy aventura"
+                     data-anime-card="demon">
+
+                <div class="anime-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=85"
+                        alt="Imagem ilustrativa de Demon Slayer"
+                        loading="lazy"
+                    >
+
+                    <span class="anime-rating">★ 9.8</span>
+
+                </div>
+
+                <div class="anime-info">
+
+                    <span class="anime-type">TV SERIES</span>
+
+                    <h3>Demon Slayer</h3>
+
+                    <p>Action • Fantasy • 2019</p>
+
+                    <button class="btn btn-primary details-button"
+                            type="button"
+                            data-anime="demon">
+
+                        Ver detalhes
+
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- JUJUTSU KAISEN -->
+
+            <article class="anime-card"
+                     data-search="jujutsu kaisen action supernatural fantasia"
+                     data-anime-card="jujutsu">
+
+                <div class="anime-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1614583225154-5fccea08f9b0?auto=format&fit=crop&w=600&q=85"
+                        alt="Imagem ilustrativa de Jujutsu Kaisen"
+                        loading="lazy"
+                    >
+
+                    <span class="anime-rating">★ 9.5</span>
+
+                </div>
+
+                <div class="anime-info">
+
+                    <span class="anime-type">TV SERIES</span>
+
+                    <h3>Jujutsu Kaisen</h3>
+
+                    <p>Action • Supernatural • 2020</p>
+
+                    <button class="btn btn-primary details-button"
+                            type="button"
+                            data-anime="jujutsu">
+
+                        Ver detalhes
+
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- ONE PIECE -->
+
+            <article class="anime-card"
+                     data-search="one piece adventure action aventura piratas"
+                     data-anime-card="onepiece">
+
+                <div class="anime-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=85"
+                        alt="Imagem ilustrativa de One Piece"
+                        loading="lazy"
+                    >
+
+                    <span class="anime-rating">★ 9.9</span>
+
+                </div>
+
+                <div class="anime-info">
+
+                    <span class="anime-type">TV SERIES</span>
+
+                    <h3>One Piece</h3>
+
+                    <p>Adventure • Action • 1999</p>
+
+                    <button class="btn btn-primary details-button"
+                            type="button"
+                            data-anime="onepiece">
+
+                        Ver detalhes
+
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- ATTACK ON TITAN -->
+
+            <article class="anime-card"
+                     data-search="attack on titan shingeki drama action"
+                     data-anime-card="attack">
+
+                <div class="anime-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?auto=format&fit=crop&w=600&q=85"
+                        alt="Imagem ilustrativa de Attack on Titan"
+                        loading="lazy"
+                    >
+
+                    <span class="anime-rating">★ 9.7</span>
+
+                </div>
+
+                <div class="anime-info">
+
+                    <span class="anime-type">TV SERIES</span>
+
+                    <h3>Attack on Titan</h3>
+
+                    <p>Action • Drama • 2013</p>
+
+                    <button class="btn btn-primary details-button"
+                            type="button"
+                            data-anime="attack">
+
+                        Ver detalhes
+
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+        <p class="empty-state" id="animeEmpty">
+            Nenhum anime encontrado.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================
+         MODAL DE DETALHES
+    ====================================== -->
+
+    <dialog class="anime-modal"
+            id="animeModal"
+            aria-labelledby="modalTitle">
+
+        <button class="modal-close"
+                id="closeModal"
+                type="button"
+                aria-label="Fechar detalhes">
+
+            ✕
+
+        </button>
+
+        <div class="modal-banner" id="modalBanner">
+
+            <span class="modal-rating" id="modalRating"></span>
+
+        </div>
+
+        <div class="modal-content">
+
+            <span class="eyebrow">
+                ANIME DETAILS
+            </span>
+
+            <h2 id="modalTitle"></h2>
+
+            <div class="modal-meta" id="modalMeta"></div>
+
+            <p class="modal-synopsis" id="modalSynopsis"></p>
+
+            <h3>Ficha técnica</h3>
+
+            <div class="specifications" id="modalSpecs"></div>
+
+            <button class="btn btn-primary modal-watch"
+                    id="watchButton"
+                    type="button">
+
+                ▶ Assistir anime
+
+            </button>
+
+        </div>
+
+    </dialog>
+
+
+    <!-- =====================================
+         DASHBOARD - TRÊS COLUNAS
+    ====================================== -->
+
+    <div class="dashboard">
+
+        <!-- TRENDING -->
+
+        <aside class="panel" id="trending">
+
+            <div class="section-heading">
+
+                <h2>Trending Now</h2>
+
+                <a href="#animeCatalog">
+                    View all
+                </a>
+
+            </div>
+
+            <div class="trending-list" id="trendingList">
+
+                <article class="trend-item"
+                         data-search="jujutsu kaisen action supernatural">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=180&h=220&q=80"
+                        alt="Arte ilustrativa de anime"
+                        loading="lazy"
+                    >
+
+                    <div class="trend-info">
+
+                        <h3>Jujutsu Kaisen</h3>
+
+                        <p>Season 2 • 2023</p>
+
+                        <span class="genre">Action</span>
+
+                    </div>
+
+                    <span class="rank">01</span>
+
+                </article>
+
+
+                <article class="trend-item"
+                         data-search="one piece adventure action">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1614583225154-5fccea08f9b0?auto=format&fit=crop&w=180&h=220&q=80"
+                        alt="Arte ilustrativa de aventura"
+                        loading="lazy"
+                    >
+
+                    <div class="trend-info">
+
+                        <h3>One Piece</h3>
+
+                        <p>Ongoing • 1999</p>
+
+                        <span class="genre">Adventure</span>
+
+                    </div>
+
+                    <span class="rank">02</span>
+
+                </article>
+
+
+                <article class="trend-item"
+                         data-search="spy x family comedy">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?auto=format&fit=crop&w=180&h=220&q=80"
+                        alt="Arte ilustrativa de anime"
+                        loading="lazy"
+                    >
+
+                    <div class="trend-info">
+
+                        <h3>Spy x Family</h3>
+
+                        <p>Season 2 • 2023</p>
+
+                        <span class="genre">Comedy</span>
+
+                    </div>
+
+                    <span class="rank">03</span>
+
+                </article>
+
+
+                <article class="trend-item"
+                         data-search="attack on titan drama fantasy">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=180&h=220&q=80"
+                        alt="Arte ilustrativa de fantasia"
+                        loading="lazy"
+                    >
+
+                    <div class="trend-info">
+
+                        <h3>Attack on Titan</h3>
+
+                        <p>Final Season • 2023</p>
+
+                        <span class="genre">Drama</span>
+
+                    </div>
+
+                    <span class="rank">04</span>
+
+                </article>
+
+            </div>
+
+            <p class="empty-state" id="trendingEmpty">
+                Nenhum resultado encontrado.
+            </p>
+
+        </aside>
+
+
+        <!-- NEWS -->
+
+        <section class="panel" id="news">
+
+            <div class="section-heading">
+
+                <h2>Latest News</h2>
+
+                <a href="#news">
+                    All news ↗
+                </a>
+
+            </div>
+
+            <div class="news-list" id="newsList">
+
+                <article class="news-card"
+                         data-search="anime temporada lançamentos novidades">
+
+                    <div class="news-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=500&h=330&q=85"
+                            alt="Ilustração de anime"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    <div class="news-copy">
+
+                        <span class="news-date">
+                            Destaque • Anime
+                        </span>
+
+                        <h3>
+                            New season, new adventures: what to watch next
+                        </h3>
+
+                        <p>
+                            Confira os destaques das temporadas
+                            e descubra novas histórias.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="news-card"
+                         data-search="manga publicação editorial quadrinhos">
+
+                    <div class="news-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?auto=format&fit=crop&w=500&h=330&q=85"
+                            alt="Coleção de quadrinhos"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    <div class="news-copy">
+
+                        <span class="news-date">
+                            Destaque • Manga
+                        </span>
+
+                        <h3>
+                            Manga releases bringing fresh stories to readers
+                        </h3>
+
+                        <p>
+                            Conheça lançamentos, novos volumes
+                            e histórias aguardadas pelos leitores.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="news-card"
+                         data-search="community eventos cultura otaku">
+
+                    <div class="news-image">
+
+                        <img
+                            src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=500&h=330&q=85"
+                            alt="Evento de tecnologia e cultura"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                    <div class="news-copy">
+
+                        <span class="news-date">
+                            Destaque • Community
+                        </span>
+
+                        <h3>
+                            Otaku community: meet, share and celebrate
+                        </h3>
+
+                        <p>
+                            Eventos e comunidades aproximam
+                            fãs de anime e mangá.
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <p class="empty-state" id="newsEmpty">
+                Nenhuma notícia encontrada.
+            </p>
+
+        </section>
+
+
+        <!-- SIGN UP -->
+
+        <aside class="panel signup-panel" id="signup">
+
+            <span class="eyebrow">
+                JOIN THE CLUB
+            </span>
+
+            <h2>Create Your Account</h2>
+
+            <p class="signup-intro">
+                Entre para a comunidade AniManga e mantenha
+                suas histórias favoritas por perto.
+            </p>
+
+            <form id="signupForm" novalidate>
+
+                <div class="form-field">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Seu nome de usuário"
+                        minlength="3"
+                        maxlength="24"
+                        autocomplete="username"
+                        required
+                    >
+
+                    <span class="error"
+                          id="usernameError"
+                          aria-live="polite"></span>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="voce@email.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <span class="error"
+                          id="emailError"
+                          aria-live="polite"></span>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Mínimo de 8 caracteres"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <span class="error"
+                          id="passwordError"
+                          aria-live="polite"></span>
+
+                </div>
+
+
+                <button type="submit"
+                        class="btn btn-primary signup-submit">
+
+                    Sign Up ↗
+
+                </button>
+
+                <p class="form-status"
+                   id="formStatus"
+                   role="status"
+                   aria-live="polite"></p>
+
+                <p class="form-note">
+
+                    Already have an account?
+
+                    <a href="#signup" id="loginLink">
+                        Log in
+                    </a>
+
+                </p>
+
+            </form>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer id="community">
+
+    <div class="container">
+
+        <div class="footer-main">
+
+            <div>
+
+                <a href="#home" class="logo">
+
+                    <span class="logo-icon">A</span>
+
+                    <span class="logo-name">
+                        AniManga <span>Central</span>
+                    </span>
+
+                </a>
+
+                <p class="footer-description">
+                    Seu universo de animes, mangás e pessoas
+                    que compartilham a mesma paixão.
+                </p>
+
+            </div>
+
+
+            <nav class="footer-links"
+                 aria-label="Links do rodapé">
+
+                <a href="#home">Home</a>
+                <a href="#animeCatalog">Anime</a>
+                <a href="#news">Manga</a>
+                <a href="#news">News</a>
+                <a href="#community">Community</a>
+
+            </nav>
+
+
+            <div class="social-links"
+                 aria-label="Redes sociais">
+
+                <a href="https://discord.com/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Discord">
+
+                    D
+
+                </a>
+
+                <a href="https://twitter.com/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Twitter">
+
+                    𝕏
+
+                </a>
+
+                <a href="https://instagram.com/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Instagram">
+
+                    ◎
+
+                </a>
+
+                <a href="https://youtube.com/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="YouTube">
+
+                    ▶
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © <span id="year"></span>
+                AniManga Central. All rights reserved.
+            </span>
+
+            <span>
+                Feito para fãs, por fãs. • Projeto demonstrativo
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script>
+
+/* =========================================
+   01. BANCO DE DADOS DEMONSTRATIVO
+   Informações dos animes
+========================================= */
+
+const animeDatabase = {
+
+    demon: {
+        title: "Demon Slayer: Kimetsu no Yaiba",
+        rating: "★ 9.8",
+        year: "2019",
+        studio: "Ufotable",
+        genre: "Action, Fantasy, Adventure",
+        episodes: "Mais de 60 episódios",
+        seasons: "Múltiplas temporadas",
+        duration: "Aproximadamente 24 minutos",
+        status: "Em andamento",
+        classification: "16 anos",
+        origin: "Japão",
+        synopsis: "Tanjiro Kamado tem sua família massacrada por demônios e sua irmã Nezuko é transformada em uma dessas criaturas. Determinado a encontrar uma cura para ela, Tanjiro entra para a organização de caçadores de demônios e enfrenta inimigos cada vez mais poderosos.",
+        image: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1000&q=85"
+    },
+
+    jujutsu: {
+        title: "Jujutsu Kaisen",
+        rating: "★ 9.5",
+        year: "2020",
+        studio: "MAPPA",
+        genre: "Action, Supernatural, Dark Fantasy",
+        episodes: "47 episódios nas duas primeiras temporadas",
+        seasons: "2 temporadas principais",
+        duration: "Aproximadamente 24 minutos",
+        status: "Em andamento",
+        classification: "16 anos",
+        origin: "Japão",
+        synopsis: "Yuji Itadori entra no mundo da feitiçaria após consumir um objeto amaldiçoado. Agora, ele precisa enfrentar maldições perigosas enquanto aprende a controlar o poder que existe dentro dele.",
+        image: "https://images.unsplash.com/photo-1614583225154-5fccea08f9b0?auto=format&fit=crop&w=1000&q=85"
+    },
+
+    onepiece: {
+        title: "One Piece",
+        rating: "★ 9.9",
+        year: "1999",
+        studio: "Toei Animation",
+        genre: "Adventure, Action, Fantasy",
+        episodes: "Mais de 1.000 episódios",
+        seasons: "Diversas sagas",
+        duration: "Aproximadamente 24 minutos",
+        status: "Em andamento",
+        classification: "12 anos",
+        origin: "Japão",
+        synopsis: "Monkey D. Luffy parte em uma grande aventura pelos mares para encontrar o lendário tesouro One Piece e conquistar o título de Rei dos Piratas, reunindo uma tripulação extraordinária ao longo do caminho.",
+        image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1000&q=85"
+    },
+
+    attack: {
+        title: "Attack on Titan",
+        rating: "★ 9.7",
+        year: "2013",
+        studio: "Wit Studio / MAPPA",
+        genre: "Action, Drama, Dark Fantasy",
+        episodes: "89 episódios",
+        seasons: "4 temporadas",
+        duration: "Aproximadamente 24 minutos",
+        status: "Concluído",
+        classification: "16 anos",
+        origin: "Japão",
+        synopsis: "A humanidade vive cercada por enormes muralhas para se proteger de criaturas gigantes chamadas Titãs. Após uma tragédia, Eren Yeager decide lutar para descobrir a verdade sobre esse mundo e mudar o destino da humanidade.",
+        image: "https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?auto=format&fit=crop&w=1000&q=85"
+    }
+
+};
+
+
+/* =========================================
+   02. ELEMENTOS DO MODAL
+========================================= */
+
+const animeModal = document.querySelector("#animeModal");
+
+const modalTitle = document.querySelector("#modalTitle");
+const modalMeta = document.querySelector("#modalMeta");
+const modalSynopsis = document.querySelector("#modalSynopsis");
+const modalSpecs = document.querySelector("#modalSpecs");
+const modalBanner = document.querySelector("#modalBanner");
+const modalRating = document.querySelector("#modalRating");
+
+let currentAnime = null;
+
+
+/* =========================================
+   03. ABRIR FICHA TÉCNICA
+========================================= */
+
+function openAnimeDetails(animeId) {
+
+    const anime = animeDatabase[animeId];
+
+    if (!anime) return;
+
+    currentAnime = animeId;
+
+    modalTitle.textContent = anime.title;
+    modalRating.textContent = anime.rating;
+
+    modalBanner.style.backgroundImage =
+        `linear-gradient(0deg, #13102b, transparent), url("${anime.image}")`;
+
+    // Tags de informações
+
+    modalMeta.replaceChildren();
+
+    const tags = [
+        anime.year,
+        anime.genre,
+        anime.status
+    ];
+
+    tags.forEach(info => {
+
+        const tag = document.createElement("span");
+
+        tag.textContent = info;
+
+        modalMeta.appendChild(tag);
+
+    });
+
+    // Sinopse
+
+    modalSynopsis.textContent = anime.synopsis;
+
+    // Especificações técnicas
+
+    const specifications = [
+        ["Estúdio", anime.studio],
+        ["Ano de lançamento", anime.year],
+        ["Episódios", anime.episodes],
+        ["Temporadas", anime.seasons],
+        ["Duração", anime.duration],
+        ["Gênero", anime.genre],
+        ["Classificação", anime.classification],
+        ["Origem", anime.origin],
+        ["Status", anime.status],
+        ["Avaliação", anime.rating]
+    ];
+
+    modalSpecs.replaceChildren();
+
+    specifications.forEach(([label, value]) => {
+
+        const item = document.createElement("div");
+
+        item.className = "spec-item";
+
+        const small = document.createElement("small");
+
+        small.textContent = label;
+
+        const strong = document.createElement("strong");
+
+        strong.textContent = value;
+
+        item.append(small, strong);
+
+        modalSpecs.appendChild(item);
+
+    });
+
+    // Abre a janela
+
+    animeModal.showModal();
+
+    document.body.classList.add("modal-open");
+
+}
+
+
+/* =========================================
+   04. EVENTOS DOS BOTÕES DE DETALHES
+========================================= */
+
+document.querySelectorAll("[data-anime]").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        openAnimeDetails(button.dataset.anime);
+
+    });
+
+});
+
+document.querySelectorAll("[data-open-anime]").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        openAnimeDetails(button.dataset.openAnime);
+
+    });
+
+});
+
+
+/* =========================================
+   05. FECHAR MODAL
+========================================= */
+
+function closeAnimeModal() {
+
+    animeModal.close();
+
+    document.body.classList.remove("modal-open");
+
+}
+
+document.querySelector("#closeModal")
+    .addEventListener("click", closeAnimeModal);
+
+animeModal.addEventListener("close", () => {
+
+    document.body.classList.remove("modal-open");
+
+});
+
+animeModal.addEventListener("click", event => {
+
+    if (event.target === animeModal) {
+        closeAnimeModal();
+    }
+
+});
+
+
+/* =========================================
+   06. BOTÃO ASSISTIR
+========================================= */
+
+document.querySelector("#watchButton")
+    .addEventListener("click", () => {
+
+        if (!currentAnime) return;
+
+        alert(
+            "A área de streaming será disponibilizada após a integração com o sistema de vídeos."
+        );
+
+    });
+
+
+/* =========================================
+   07. PESQUISA GLOBAL
+   Pesquisa animes, tendências e notícias
+========================================= */
+
+const searchInput = document.querySelector("#searchInput");
+
+const searchGroups = [
+
+    {
+        selector: ".anime-card",
+        empty: "#animeEmpty",
+        counter: true
+    },
+
+    {
+        selector: ".trend-item",
+        empty: "#trendingEmpty"
+    },
+
+    {
+        selector: ".news-card",
+        empty: "#newsEmpty"
+    }
+
+];
+
+function filterContent(query) {
+
+    const normalizedQuery = query
+        .trim()
+        .toLocaleLowerCase("pt-BR");
+
+    searchGroups.forEach(group => {
+
+        const items = [
+            ...document.querySelectorAll(group.selector)
+        ];
+
+        let visibleCount = 0;
+
+        items.forEach(item => {
+
+            const searchableText = (
+                item.textContent + " " +
+                (item.dataset.search || "")
+            ).toLocaleLowerCase("pt-BR");
+
+            const matches =
+                !normalizedQuery ||
+                searchableText.includes(normalizedQuery);
+
+            item.hidden = !matches;
+
+            if (matches) {
+                visibleCount++;
+            }
+
+        });
+
+        document.querySelector(group.empty)
+            .classList.toggle("show", visibleCount === 0);
+
+        if (group.counter) {
+
+            document.querySelector("#animeCounter").textContent =
+                `${visibleCount} ${visibleCount === 1 ? "anime" : "animes"}`;
+
+        }
+
+    });
+
+}
+
+searchInput.addEventListener("input", event => {
+
+    filterContent(event.target.value);
+
+});
+
+document.querySelector("#searchForm")
+    .addEventListener("submit", event => {
+
+        event.preventDefault();
+
+        filterContent(searchInput.value);
+
+        document.querySelector("#animeCatalog")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+    });
+
+
+/* =========================================
+   08. FAVORITOS
+========================================= */
+
+const favoritesButton =
+    document.querySelector("#favoritesButton");
+
+favoritesButton.addEventListener("click", () => {
+
+    const active =
+        favoritesButton.getAttribute("aria-pressed") === "true";
+
+    favoritesButton.setAttribute(
+        "aria-pressed",
+        String(!active)
+    );
+
+    favoritesButton.textContent =
+        active ? "♡" : "♥";
+
+    favoritesButton.setAttribute(
+        "aria-label",
+        active ? "Selecionar favoritos" : "Favoritos selecionados"
+    );
+
+});
+
+
+/* =========================================
+   09. ATALHO DE CONTA
+========================================= */
+
+document.querySelector("#accountButton")
+    .addEventListener("click", () => {
+
+        document.querySelector("#signup")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        document.querySelector("#username")
+            .focus({ preventScroll: true });
+
+    });
+
+
+/* =========================================
+   10. CADASTRO E VALIDAÇÃO
+========================================= */
+
+const signupForm = document.querySelector("#signupForm");
+
+const fields = {
+
+    username: {
+        input: document.querySelector("#username"),
+        error: document.querySelector("#usernameError")
+    },
+
+    email: {
+        input: document.querySelector("#email"),
+        error: document.querySelector("#emailError")
+    },
+
+    password: {
+        input: document.querySelector("#password"),
+        error: document.querySelector("#passwordError")
+    }
+
+};
+
+function setFieldError(field, message) {
+
+    field.error.textContent = message;
+
+    field.input.setAttribute(
+        "aria-invalid",
+        message ? "true" : "false"
+    );
+
+}
+
+signupForm.addEventListener("submit", event => {
+
+    event.preventDefault();
+
+    const status = document.querySelector("#formStatus");
+
+    status.textContent = "";
+
+    const username = fields.username.input.value.trim();
+
+    const email = fields.email.input.value.trim();
+
+    const password = fields.password.input.value;
+
+    // Nome de usuário
+
+    setFieldError(
+        fields.username,
+        username.length < 3
+            ? "Use pelo menos 3 caracteres."
+            : ""
+    );
+
+    // Email
+
+    setFieldError(
+        fields.email,
+        !fields.email.input.validity.valid || !email
+            ? "Informe um email válido."
+            : ""
+    );
+
+    // Senha
+
+    setFieldError(
+        fields.password,
+        password.length < 8
+            ? "A senha precisa ter pelo menos 8 caracteres."
+            : ""
+    );
+
+    // Verifica erros
+
+    const invalidField = Object.values(fields)
+        .find(field => field.error.textContent);
+
+    if (invalidField) {
+
+        invalidField.input.focus();
+
+        return;
+
+    }
+
+    status.textContent =
+        "Dados validados! O formulário está pronto para integração com o backend.";
+
+    signupForm.reset();
+
+    Object.values(fields).forEach(field => {
+
+        setFieldError(field, "");
+
+    });
+
+});
+
+
+/* =========================================
+   11. LIMPAR ERROS AO DIGITAR
+========================================= */
+
+Object.values(fields).forEach(field => {
+
+    field.input.addEventListener("input", () => {
+
+        setFieldError(field, "");
+
+    });
+
+});
+
+
+/* =========================================
+   12. LOGIN DEMONSTRATIVO
+========================================= */
+
+document.querySelector("#loginLink")
+    .addEventListener("click", event => {
+
+        event.preventDefault();
+
+        document.querySelector("#email").focus();
+
+        document.querySelector("#formStatus")
+            .textContent =
+            "Área de login demonstrativa. Integre a autenticação para entrar.";
+
+    });
+
+
+/* =========================================
+   13. ANO AUTOMÁTICO DO RODAPÉ
+========================================= */
+
+document.querySelector("#year").textContent =
+    new Date().getFullYear();
+
+
+/* =========================================
+   14. NAVEGAÇÃO ATIVA
+========================================= */
+
+const navLinks = [
+    ...document.querySelectorAll(".nav-list a")
+];
+
+const navSections = navLinks
+    .map(link => document.querySelector(link.getAttribute("href")))
+    .filter(section => section && section.id);
+
+if ("IntersectionObserver" in window) {
+
+    const observer = new IntersectionObserver(entries => {
+
+        entries.forEach(entry => {
+
+            if (!entry.isIntersecting) return;
+
+            navLinks.forEach(link => {
+
+                const isActive =
+                    link.getAttribute("href") ===
+                    `#${entry.target.id}`;
+
+                if (isActive) {
+
+                    link.classList.add("active");
+
+                    link.setAttribute("aria-current", "page");
+
+                } else {
+
+                    link.classList.remove("active");
+
+                    link.removeAttribute("aria-current");
+
+                }
+
+            });
+
+        });
+
+    }, {
+        rootMargin: "-30% 0px -60% 0px"
+    });
+
+    navSections.forEach(section => {
+
+        observer.observe(section);
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
